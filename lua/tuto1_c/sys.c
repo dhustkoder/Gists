@@ -5,6 +5,8 @@
 #include <lauxlib.h>
 
 static lua_State* init_lua();
+static int get_global_function(lua_State* lstate, const char* funcname);
+static double pop_number(lua_State* lstate);
 
 int main()
 {
@@ -12,10 +14,10 @@ int main()
 	if (!lstate)
 		return EXIT_FAILURE;
 
-	luaL_dofile(lstate, "sum.lua");
-	lua_getglobal(lstate, "sum"); // push sum to the lua stack
-	// check if the object in the top of stach is a function
-	if (lua_isfunction(lstate, -1)) {
+	luaL_dofile(lstate, "hello.lua"); // load and run hello.lua
+	luaL_dofile(lstate, "sum.lua"); // load sum.lua
+
+	if (get_global_function(lstate, "sum")) {
 		// push the arguments
 		lua_pushnumber(lstate, 20);
 		lua_pushnumber(lstate, 22);
@@ -25,8 +27,7 @@ int main()
 		} else if (!lua_isnumber(lstate, -1)) {
 			printf("sum didn't returned a number\n");
 		} else {
-			const double result = lua_tonumber(lstate, -1);
-			lua_pop(lstate, 1);
+			const double result = pop_number(lstate);
 			printf("sum's result: %lf\n", result);
 		}
 	} else {
@@ -37,8 +38,6 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-
-
 lua_State* init_lua()
 {
 	// create a new state and load libs
@@ -46,11 +45,26 @@ lua_State* init_lua()
 	if (new_state != NULL) {
 		luaL_openlibs(new_state);
 		return new_state;
-	} else {
-		printf("failed to create Lua Satate\n");
-		return NULL;
 	}
+
+	printf("failed to create Lua Satate\n");
+	return NULL;
 }
 
+int get_global_function(lua_State* const lstate, const char* const funcname)
+{
+	lua_getglobal(lstate, funcname); // get the globalname nad check if is function
+	if (!lua_isfunction(lstate, -1)) {
+		lua_pop(lstate, 1); // pop it if it is not a function
+		return 0;
+	}
 
+	return 1;
+}
 
+double pop_number(lua_State* const lstate)
+{
+	const double num = lua_tonumber(lstate, -1);
+	lua_pop(lstate, 1);
+	return num;
+}
