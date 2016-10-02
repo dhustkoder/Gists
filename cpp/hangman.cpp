@@ -7,9 +7,9 @@
 
 struct RandomGenerator {
 	RandomGenerator(const size_t min, const size_t max) : dist(min, max) {}
-	std::random_device rd;
-	std::uniform_int_distribution<size_t> dist;
-	unsigned operator()() { return dist(rd); }
+	mutable std::random_device rd;
+	mutable std::uniform_int_distribution<size_t> dist;
+	unsigned operator()() const { return dist(rd); }
 };
 
 struct Gallow {
@@ -83,7 +83,7 @@ struct Game {
 		return true;
 	}
 
-	RandomGenerator rand_gen { 0, words.size() - 1 };
+	const RandomGenerator rand_gen { 0, words.size() - 1 };
 	const std::string word { words[rand_gen()] };
 	std::string guess { std::string().insert(0, word.size(), '_') };
 	Gallow gallow;
