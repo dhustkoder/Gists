@@ -3,7 +3,6 @@
 #include <type_traits>
 #include <exception>
 #include <string>
-#include <tuple>
 
 extern "C" {
 #include <lua.h>
@@ -29,7 +28,7 @@ public:
 	template<class T>
 	std::enable_if_t<is_numeric_v<T>, T>  Read(int idx) const noexcept;
 	template<class T>
-	std::enable_if_t<is_string_v<T>, T>  Read(int idx) const noexcept;
+	std::enable_if_t<is_string_v<T>, std::string>  Read(int idx) const noexcept;
 	template<class T>
 	auto Pop() noexcept;
 	void Push(double val);
@@ -37,12 +36,13 @@ public:
 	template<class ...Args>
 	int ProtectedCall(const char* func, Args&& ...args);
 private:
-	template<size_t NArgs, class T>
-	int ProtectedCall(const char* func, T&& arg);
-	template<size_t NArgs, class T, class ...Args>
-	int ProtectedCall(const char* func, T&& arg, Args&& ...args);
+	void PushArgs(){}
+	template<class T>
+	void PushArgs(T&& arg);
+	template<class T, class ...Args>
+	void PushArgs(T&& arg, Args&& ...args);
+	
 	lua_State* const m_l;
-
 };
 
 inline LuaState::LuaState()
@@ -61,6 +61,31 @@ inline LuaState::~LuaState()
 }
 
 
+inline void LuaState::Push(const double val)
+{
+	lua_pushnumber(m_l, val);
+}
+
+
+inline void LuaState::Push(const char* str)
+{
+	lua_pushstring(m_l, str);
+}
+
+template<class T>
+void LuaState::PushArgs(T&& arg)
+{
+	Push(std::forward<T>(arg));
+}
+
+template<class T, class ...Args>
+void LuaState::PushArgs(T&& arg, Args&& ...args)
+{
+	Push(std::forward<T>(arg));
+	PushArgs(std::forward<Args>(args)...);
+}
+
+
 template<class T>
 inline std::enable_if_t<is_numeric_v<T>, T> LuaState::Read(const int idx) const noexcept
 {
@@ -68,12 +93,11 @@ inline std::enable_if_t<is_numeric_v<T>, T> LuaState::Read(const int idx) const 
 }
 
 template<class T>
-inline std::enable_if_t<is_string_v<T>, T> LuaState::Read(const int idx) const noexcept
+inline std::enable_if_t<is_string_v<T>, std::string> LuaState::Read(const int idx) const noexcept
 {
-	return lua_tostring(m_l, idx);
+	const auto str = lua_tostring(m_l, idx);
+	return str != nullptr ? str : "";
 }
-
-
 
 
 template<class T>
@@ -94,41 +118,18 @@ inline void LuaState::DoFile(const char* const file_name)
 	}
 }
 
-inline void LuaState::Push(const double val)
-{
-	lua_pushnumber(m_l, val);
-}
-
-
-inline void LuaState::Push(const char* str)
-{
-	lua_pushstring(m_l, str);
-}
-
-
-template<size_t NArgs, class T>
-inline int LuaState::ProtectedCall(const char* const func, T&& last)
-{
-	static_assert(static_cast<int>(NArgs) == NArgs, "");
-	Push(std::forward<T>(last));
-	const auto top_before = lua_gettop(m_l) - NArgs - 1;
-	lua_pcall(m_l, static_cast<int>(NArgs), LUA_MULTRET, 0);
-	return lua_gettop(m_l) - top_before;
-}
-
-template<size_t NArgs, class T, class ...Args>
-inline int LuaState::ProtectedCall(const char* const func, T&& arg, Args&& ...args)
-{
-	Push(std::forward<T>(arg));
-	return ProtectedCall<NArgs>(func, std::forward<Args>(args)...);
-}
 
 
 template<class ...Args>
-inline int LuaState::ProtectedCall(const char* const func, Args&& ...args)
+int LuaState::ProtectedCall(const char* const func, Args&& ...args)
 {
+	constexpr const auto nargs = sizeof...(Args);
+	static_assert(static_cast<int>(nargs) == nargs, "");
 	lua_getglobal(m_l, func);
-	return ProtectedCall<sizeof...(Args)>(func, std::forward<Args>(args)...);
+	PushArgs(std::forward<Args>(args)...);
+	const auto top_before = lua_gettop(m_l) - nargs - 1;
+	lua_pcall(m_l, static_cast<int>(nargs), LUA_MULTRET, 0);
+	return lua_gettop(m_l) - top_before;
 }
 
 
@@ -137,11 +138,16 @@ int main()
 	try {
 		LuaState lua;
 		lua.DoFile("hello.lua");
-		lua.DoFile("sum.lua");
-		const auto nresults = lua.ProtectedCall("sum", 20, 22);
-		std::cout << "sum's number of results = " << nresults << '\n';
-		for (int i = 0; i < nresults; ++i)
-			std::cout << "sum's result = " << lua.Pop<const char*>() << '\n';
+		lua.DoFile("functions.lua");
+		const auto call = [&](const char* fun, auto&& ...args) {
+			const auto nresults = lua.ProtectedCall(fun, std::forward<decltype(args)>(args)...);
+			std::cout << fun << "'s results:\n";
+			for (int i = 1; i <= nresults; ++i)
+				std::cout << '[' << i << "] = " << lua.Pop<std::string>() << '\n';
+		};
+		
+		call("sum", 20, 22);
+		call("get_great_warriors");
 
 	} catch (std::exception& e) {
 		std::cout << "Fatal Exception: " << e.what() << '\n';
