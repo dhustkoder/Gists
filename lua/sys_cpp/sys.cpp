@@ -15,7 +15,7 @@ constexpr const bool is_numeric_v = std::conditional_t<std::is_floating_point<T>
                                    || std::is_integral<T>::value,
 				   std::true_type, std::false_type>::value;
 template<class T>
-constexpr const bool is_string_v = std::conditional_t<std::is_convertible<char*, T>::value,
+constexpr const bool is_string_v = std::conditional_t<std::is_convertible<std::string, T>::value,
                                      std::true_type, std::false_type>::value;
 
 
@@ -61,17 +61,6 @@ inline LuaState::~LuaState()
 }
 
 
-inline void LuaState::Push(const double val)
-{
-	lua_pushnumber(m_l, val);
-}
-
-
-inline void LuaState::Push(const char* str)
-{
-	lua_pushstring(m_l, str);
-}
-
 template<class T>
 void LuaState::PushArgs(T&& arg)
 {
@@ -87,13 +76,13 @@ void LuaState::PushArgs(T&& arg, Args&& ...args)
 
 
 template<class T>
-inline std::enable_if_t<is_numeric_v<T>, T> LuaState::Read(const int idx) const noexcept
+std::enable_if_t<is_numeric_v<T>, T> LuaState::Read(const int idx) const noexcept
 {
 	return lua_tonumber(m_l, idx);
 }
 
 template<class T>
-inline std::enable_if_t<is_string_v<T>, std::string> LuaState::Read(const int idx) const noexcept
+std::enable_if_t<is_string_v<T>, std::string> LuaState::Read(const int idx) const noexcept
 {
 	const auto str = lua_tostring(m_l, idx);
 	return str != nullptr ? str : "";
@@ -101,36 +90,57 @@ inline std::enable_if_t<is_string_v<T>, std::string> LuaState::Read(const int id
 
 
 template<class T>
-inline auto LuaState::Pop() noexcept
+auto LuaState::Pop() noexcept
 {
 	auto val = Read<T>(-1);
 	lua_pop(m_l, 1);
 	return val;
 }
 
-
-inline void LuaState::DoFile(const char* const file_name)
-{
-	using namespace std::string_literals;
-	if (luaL_dofile(m_l, file_name) != 0) {
-		const auto errmsg = Pop<const char*>();
-		throw std::runtime_error("luaL_dofile failed: "s + errmsg);
-	}
-}
-
-
-
 template<class ...Args>
 int LuaState::ProtectedCall(const char* const func, Args&& ...args)
 {
-	constexpr const auto nargs = sizeof...(Args);
-	static_assert(static_cast<int>(nargs) == nargs, "");
+	using namespace std::string_literals;
+	static_assert(static_cast<int>(sizeof...(Args)) == sizeof...(Args), "");
+	constexpr const auto nargs = static_cast<int>(sizeof...(Args));
 	lua_getglobal(m_l, func);
+	
+	if (!lua_isfunction(m_l, -1)) {
+		throw std::runtime_error(func + " is not a function"s);
+	} else if (nargs != 0 && !lua_checkstack(m_l, nargs)) {
+		throw std::runtime_error("no enough stack space for " + 
+		                         std::to_string(nargs) + " arguments");
+	}
+	
 	PushArgs(std::forward<Args>(args)...);
 	const auto top_before = lua_gettop(m_l) - nargs - 1;
 	lua_pcall(m_l, static_cast<int>(nargs), LUA_MULTRET, 0);
 	return lua_gettop(m_l) - top_before;
 }
+
+
+
+inline void LuaState::DoFile(const char* const file_name)
+{
+	using namespace std::string_literals;
+	if (luaL_dofile(m_l, file_name) != 0) {
+		const auto errmsg = Pop<std::string>();
+		throw std::runtime_error("luaL_dofile failed: "s + errmsg);
+	}
+}
+
+inline void LuaState::Push(const double val)
+{
+	lua_pushnumber(m_l, val);
+}
+
+
+inline void LuaState::Push(const char* str)
+{
+	lua_pushstring(m_l, str);
+}
+
+
 
 
 int main()
@@ -139,17 +149,17 @@ int main()
 		LuaState lua;
 		lua.DoFile("hello.lua");
 		lua.DoFile("functions.lua");
-		const auto call = [&](const char* fun, auto&& ...args) {
+		const auto call_and_print_results = [&](const char* fun, auto&& ...args) {
 			const auto nresults = lua.ProtectedCall(fun, std::forward<decltype(args)>(args)...);
 			std::cout << fun << " results:\n";
 			for (int i = 1; i <= nresults; ++i)
 				std::cout << '[' << i << "] = " << lua.Pop<std::string>() << '\n';
 		};
 		
-		call("sum", 20, 22);
-		call("get_great_warriors");
+		call_and_print_results("sum", 20, 22);
+		call_and_print_results("get_great_warriors");
 
-	} catch (std::exception& e) {
+	} catch (const std::exception& e) {
 		std::cout << "Fatal Exception: " << e.what() << '\n';
 		return EXIT_FAILURE;
 	}
