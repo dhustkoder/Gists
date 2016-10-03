@@ -141,7 +141,7 @@ int main()
 		lua.DoFile("functions.lua");
 		const auto call = [&](const char* fun, auto&& ...args) {
 			const auto nresults = lua.ProtectedCall(fun, std::forward<decltype(args)>(args)...);
-			std::cout << fun << "'s results:\n";
+			std::cout << fun << " results:\n";
 			for (int i = 1; i <= nresults; ++i)
 				std::cout << '[' << i << "] = " << lua.Pop<std::string>() << '\n';
 		};

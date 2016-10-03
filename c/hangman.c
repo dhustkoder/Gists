@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 typedef struct Game {
-	struct {
+	struct Gallow {
 		char body[7];
 		int errors;
 	} gallow;
@@ -37,10 +37,10 @@ static void free_game(const Game* const game)
 	free(game->hidden_word);
 }
 
-static int increment_gallow(Game* const game)
+static int increment_gallow(struct Gallow* const gallow)
 {
-	char* const body = game->gallow.body;
-	switch(++game->gallow.errors) {
+	char* const body = gallow->body;
+	switch(++gallow->errors) {
 	case 6: body[6] = '\\'; break;
 	case 5: body[5] = '/'; break;
 	case 4: body[4] = '\\'; break;
@@ -49,7 +49,7 @@ static int increment_gallow(Game* const game)
 	case 1: body[1] = ')', body[0] = '('; break;
 	}
 
-	return game->gallow.errors < 6 ? 0 : -1;
+	return gallow->errors < 6 ? 0 : -1;
 }
 
 
@@ -92,7 +92,7 @@ static int update_game(Game* const game)
 		}
 	}
 
-	if (!found && increment_gallow(game) != 0) {
+	if (!found && increment_gallow(&game->gallow) != 0) {
 		draw_game(game);
 		printf("######## you lose! ############\n");
 		return 1;

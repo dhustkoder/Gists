@@ -1,5 +1,6 @@
 
-function sum (param1, param2)
+
+function sum(param1, param2)
 	return param1 + param2;
 end
 
