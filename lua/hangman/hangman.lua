@@ -1,11 +1,11 @@
 #!/bin/lua
 
-errors = nil
-word = nil
-hiddenWord = nil
-tries = nil
-body = nil
-words = { 
+local errors = nil
+local word = nil
+local hiddenWord = nil
+local tries = nil
+local body = nil
+local words = { 
 	"computer", "nintendo", 
 	"commodore", "linux" 
 }
@@ -81,10 +81,16 @@ function updateGame()
 	return hiddenWord == word and true or false
 end
 
-initGame()
-while updateGame() == false and errors < 6 do end
-print(errors < 6 and "YOU WON" or "YOU LOSE")
-
+while true do
+	initGame()
+	while updateGame() == false and errors < 6 do end
+	print(errors < 6 and "YOU WON" or "YOU LOSE")
+	print("play again ? y/n")
+	local answer = io.read()
+	if answer ~= 'y' then 
+		break 
+	end
+end
 
 
 
