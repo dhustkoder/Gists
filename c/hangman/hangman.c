@@ -9,13 +9,13 @@ typedef struct Game {
 		char body[7];
 		int errors;
 	} gallow;
-	const char* const correct_word;
-	char* const hidden_word;
+	const char* correct_word;
+	char* hidden_word;
 } Game;
 
 static const char* const words[] = { "control", "television", "computer" };
 
-static int init_game(Game* const game)
+static int init_game(Game* game)
 {
 	srand(time(NULL));
 	*game = (Game) { .gallow.body = {'\0'}, .gallow.errors = 0 };
