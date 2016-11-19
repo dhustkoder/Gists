@@ -60,15 +60,14 @@ int main()
 void gen_sine_wave(const int seconds, const double freq, const SDL_AudioDeviceID dev,
 		const SDL_AudioSpec& spec, AudioData* const data)
 {
-	AudioData data { 0, spec.freq * seconds, freq / spec.freq, 2000 };
-	auto old_data = spec.userdata;
-	spec.userdata = &data;
-
+	data->pos = 0;
+	data->len = spec.freq * seconds;
+	data->freq = freq / spec.freq;
+	data->vol = 2000;
 	SDL_PauseAudioDevice(dev, 0); /* play */
-	while (data.len > 0)
+	while (data->len > 0)
 		SDL_Delay(1000);
 	SDL_PauseAudioDevice(dev, 1); /* pause */
-	spec.userdata = old_data;
 }
 
 
