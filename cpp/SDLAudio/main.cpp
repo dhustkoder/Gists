@@ -2,31 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <SDL2/SDL.h>
-
-template<class F>
-struct Finally {
-	Finally(F&& f) 
-		: m_f(static_cast<F&&>(f))
-	{
-	}
-	~Finally() 
-	{
-		m_f();
-	}
-	const F m_f;
-};
-
-template<class F>
-constexpr Finally<F> finally(F&& f)
-{
-	return Finally<F>(static_cast<F&&>(f));
-} 
-
-
-
-
-
-
+#include "finally.hpp"
 
 struct AudioData {
 	unsigned int pos; /* which sample we are up to */
@@ -39,8 +15,9 @@ struct AudioData {
 static bool init_sdl();
 static void quit_sdl();
 static void print_spec_info(const SDL_AudioSpec& spec, const char* msg = nullptr);
+static void gen_sine_wave(int seconds, double freq, SDL_AudioDeviceID dev,
+                           const SDL_AudioSpec& spec, AudioData* data);
 void audio_callback(void* userdata, uint8_t* stream, int len);
-
 
 int main()
 {
@@ -50,7 +27,6 @@ int main()
 	const auto sdl_quitter = finally([] {
 		quit_sdl();
 	});
-
 
 	AudioData audio_data{};
 	SDL_AudioSpec want{}, have{};
@@ -77,22 +53,29 @@ int main()
 	});
 
 	print_spec_info(have, "[SDL] AudioSpec Obtained");
-
-	audio_data.pos = 0;
-	audio_data.len = have.freq * 5; /* 5 seconds */
-	audio_data.freq = 300.0 / have.freq;
-	audio_data.vol = 2000;
-
-	SDL_PauseAudioDevice(dev, 0); /* play */
-	while (audio_data.len > 0)
-		SDL_Delay(1000);
-	SDL_PauseAudioDevice(dev, 1); /* pause */
+	gen_sine_wave(5, 200, dev, have, &audio_data);
 	return 0;
 }
 
+void gen_sine_wave(const int seconds, const double freq, const SDL_AudioDeviceID dev,
+		const SDL_AudioSpec& spec, AudioData* const data)
+{
+	AudioData data { 0, spec.freq * seconds, freq / spec.freq, 2000 };
+	auto old_data = spec.userdata;
+	spec.userdata = &data;
+
+	SDL_PauseAudioDevice(dev, 0); /* play */
+	while (data.len > 0)
+		SDL_Delay(1000);
+	SDL_PauseAudioDevice(dev, 1); /* pause */
+	spec.userdata = old_data;
+}
+
+
+
 void audio_callback(void* const userdata, uint8_t* const stream, int len)
 {
-	constexpr const auto x2PI = 2 * M_PI;
+	constexpr const auto k2PI = 2 * M_PI;
 
 	len /= sizeof(uint16_t);
 	AudioData& data = *reinterpret_cast<AudioData*>(userdata);
@@ -100,7 +83,7 @@ void audio_callback(void* const userdata, uint8_t* const stream, int len)
 
 	for (int i = 0; i < len; ++i) {
 		buffer[i] = 
-		  data.vol * sin(x2PI * data.freq * data.pos++);
+		  data.vol * sin(k2PI * data.freq * data.pos++);
 	}
 
 	data.len -= len;
