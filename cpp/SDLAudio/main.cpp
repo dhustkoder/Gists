@@ -1,12 +1,45 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <math.h>
 #include <SDL2/SDL.h>
+
+template<class F>
+struct Finally {
+	Finally(F&& f) 
+		: m_f(static_cast<F&&>(f))
+	{
+	}
+	~Finally() 
+	{
+		m_f();
+	}
+	const F m_f;
+};
+
+template<class F>
+constexpr Finally<F> finally(F&& f)
+{
+	return Finally<F>(static_cast<F&&>(f));
+} 
+
+
+
+
+
+
+
+struct AudioData {
+	unsigned int pos; /* which sample we are up to */
+	int len; /* how many samples left to play, stops when <= 0*/
+	double freq; /*audio frequency in cycles per sample*/
+	double vol; /*audio volume, 0 - ~32000*/
+};
 
 
 static bool init_sdl();
 static void quit_sdl();
 static void print_spec_info(const SDL_AudioSpec& spec, const char* msg = nullptr);
-void audio_callback(void* data, uint8_t* stream, int len);
+void audio_callback(void* userdata, uint8_t* stream, int len);
 
 
 int main()
@@ -14,43 +47,64 @@ int main()
 	if (init_sdl() != true)
 		return -1;
 
-	const struct SDL_Quitter {
-		~SDL_Quitter() { quit_sdl(); }
-	} sdl_quitter;
+	const auto sdl_quitter = finally([] {
+		quit_sdl();
+	});
 
-	SDL_AudioSpec want, have;
-	want.freq = 22050;
-	want.format = AUDIO_S16LSB;
+
+	AudioData audio_data{};
+	SDL_AudioSpec want{}, have{};
+	
+	want.freq = 44100;
+	want.format = AUDIO_S16;
 	want.channels = 2;
 	want.samples = 4096;
-	want.callback = audio_callback;
+	want.callback = &audio_callback;
+	want.userdata = &audio_data;
+
 	print_spec_info(want, "[SDL] AudioSpec Desired");
-	const SDL_AudioDeviceID dev = SDL_OpenAudioDevice(nullptr, 0, &want,
-	                              &have, SDL_AUDIO_ALLOW_ANY_CHANGE);
+
+	const SDL_AudioDeviceID dev =
+	  SDL_OpenAudioDevice(nullptr, 0, &want, &have,
+	                       SDL_AUDIO_ALLOW_ANY_CHANGE);
 	if (dev == 0) {
 		fprintf(stderr, "error %s\n", SDL_GetError());
 		return -1;
 	}
 
-	const struct SDL_AudioDevCloser {
-		~SDL_AudioDevCloser() { SDL_CloseAudioDevice(dev); }
-		const SDL_AudioDeviceID dev;
-	} sdl_audio_dev_closer { dev };
+	const auto audio_device_guard = finally([dev] {
+		SDL_CloseAudioDevice(dev);
+	});
 
 	print_spec_info(have, "[SDL] AudioSpec Obtained");
 
+	audio_data.pos = 0;
+	audio_data.len = have.freq * 5; /* 5 seconds */
+	audio_data.freq = 300.0 / have.freq;
+	audio_data.vol = 2000;
+
+	SDL_PauseAudioDevice(dev, 0); /* play */
+	while (audio_data.len > 0)
+		SDL_Delay(1000);
+	SDL_PauseAudioDevice(dev, 1); /* pause */
 	return 0;
 }
 
-
-
-void audio_callback(void* const data, uint8_t* const stream, const int len)
+void audio_callback(void* const userdata, uint8_t* const stream, int len)
 {
-	printf("data addr: %zX\n", reinterpret_cast<size_t>(data));
-	for (int i = 0; i < len; ++i)
-		printf("%d: %u\n", i, static_cast<unsigned>(stream[i]));
-}
+	constexpr const auto x2PI = 2 * M_PI;
 
+	len /= sizeof(uint16_t);
+	AudioData& data = *reinterpret_cast<AudioData*>(userdata);
+	int16_t* const buffer = reinterpret_cast<int16_t*>(stream);
+
+	for (int i = 0; i < len; ++i) {
+		buffer[i] = 
+		  data.vol * sin(x2PI * data.freq * data.pos++);
+	}
+
+	data.len -= len;
+}
 
 void print_spec_info(const SDL_AudioSpec& spec, const char* const msg /* = nullptr */)
 {
@@ -58,14 +112,14 @@ void print_spec_info(const SDL_AudioSpec& spec, const char* const msg /* = nullp
 		printf("%s\n", msg);
 
 	printf("frequency: %d\n"
-	         "format: float %d signed %d bigendian %d size %d\n"
-	         "channels: %d\n"
-	         "samples: %d\n",
-		spec.freq, SDL_AUDIO_ISFLOAT(spec.format), 
-		SDL_AUDIO_ISSIGNED(spec.format), 
-		SDL_AUDIO_ISBIGENDIAN(spec.format), 
-		SDL_AUDIO_BITSIZE(spec.format), 
-		spec.channels, spec.samples);
+	       "format: float %d signed %d bigendian %d size %d\n"
+	       "channels: %d\n"
+	       "samples: %d\n",
+	       spec.freq, SDL_AUDIO_ISFLOAT(spec.format), 
+	       SDL_AUDIO_ISSIGNED(spec.format), 
+	       SDL_AUDIO_ISBIGENDIAN(spec.format), 
+	       SDL_AUDIO_BITSIZE(spec.format), 
+	       spec.channels, spec.samples);
 }
 
 bool init_sdl()
@@ -78,18 +132,9 @@ bool init_sdl()
 	return true;
 }
 
-
 void quit_sdl()
 {
 	SDL_Quit();
 }
-
-
-
-
-
-
-
-
 
 

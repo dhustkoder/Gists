@@ -1,5 +1,5 @@
 
 all:
-	$(CXX) -std=c++11 -Wall -Wextra -pedantic -lSDL2 *.cpp
+	$(CXX) -std=c++11 -Wall -Wextra -pedantic -lm -lSDL2 *.cpp
 
 
