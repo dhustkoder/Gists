@@ -76,8 +76,8 @@ void gen_sine_wave(const int seconds, const double freq, const SDL_AudioDeviceID
 {
 	data->pos = 0;
 	data->len = spec.freq * seconds * spec.channels;
-	data->freq = (freq/2) / spec.freq;
-	data->vol = 2000;
+	data->freq = (freq / 2) / spec.freq;
+	data->vol = 6000;
 	data->wave_type = WaveType::Sine;
 	SDL_PauseAudioDevice(dev, 0); /* play */
 	while (data->len > 0) {
@@ -92,7 +92,7 @@ void gen_quad_wave(const int seconds, const double freq, const SDL_AudioDeviceID
 	data->pos = 0;
 	data->len = spec.freq * seconds * spec.channels;
 	data->freq = spec.freq / freq;
-	data->vol = 2000;
+	data->vol = 6000;
 	data->wave_type = WaveType::Square;
 	SDL_PauseAudioDevice(dev, 0); /* play */
 	while (data->len > 0) {
@@ -103,8 +103,6 @@ void gen_quad_wave(const int seconds, const double freq, const SDL_AudioDeviceID
 
 void audio_callback(void* const userdata, uint8_t* const stream, int len)
 {
-	constexpr const auto k2PI = 2 * M_PI;
-
 	len /= sizeof(uint16_t);
 	AudioData& data = *reinterpret_cast<AudioData*>(userdata);
 	int16_t* const buffer = reinterpret_cast<int16_t*>(stream);
@@ -123,7 +121,7 @@ void audio_callback(void* const userdata, uint8_t* const stream, int len)
 	case WaveType::Sine:
 		for (int i = 0; i < len; ++i) {
 			buffer[i] = 
-			  data.vol * sin(k2PI * data.freq * data.pos++);
+			  data.vol * sin(2 * M_PI * data.freq * data.pos++);
 		}
 		break;
 	default:
