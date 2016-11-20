@@ -62,8 +62,12 @@ int main()
 	});
 
 	print_spec_info(have, "[SDL] AudioSpec Obtained");
-	gen_sine_wave(5, 400, dev, have, &audio_data);
-	gen_quad_wave(5, 400, dev, have, &audio_data);
+	
+	for (int i = 100; i <= 1000; i += 100) {
+		gen_sine_wave(2, i, dev, have, &audio_data);
+		gen_quad_wave(2, i, dev, have, &audio_data);
+	}
+	
 	return 0;
 }
 
@@ -71,13 +75,14 @@ void gen_sine_wave(const int seconds, const double freq, const SDL_AudioDeviceID
 		const SDL_AudioSpec& spec, AudioData* const data)
 {
 	data->pos = 0;
-	data->len = spec.freq * seconds;
+	data->len = spec.freq * seconds * spec.channels;
 	data->freq = (freq/2) / spec.freq;
 	data->vol = 2000;
 	data->wave_type = WaveType::Sine;
 	SDL_PauseAudioDevice(dev, 0); /* play */
-	while (data->len > 0)
-		SDL_Delay(1000);
+	while (data->len > 0) {
+		SDL_Delay(10);
+	}
 	SDL_PauseAudioDevice(dev, 1); /* pause */
 }
 
@@ -85,13 +90,14 @@ void gen_quad_wave(const int seconds, const double freq, const SDL_AudioDeviceID
 		const SDL_AudioSpec& spec, AudioData* const data)
 {
 	data->pos = 0;
-	data->len = spec.freq * seconds;
+	data->len = spec.freq * seconds * spec.channels;
 	data->freq = spec.freq / freq;
 	data->vol = 2000;
 	data->wave_type = WaveType::Square;
 	SDL_PauseAudioDevice(dev, 0); /* play */
-	while (data->len > 0)
-		SDL_Delay(1000);
+	while (data->len > 0) {
+		SDL_Delay(10);
+	}
 	SDL_PauseAudioDevice(dev, 1); /* pause */
 }
 
