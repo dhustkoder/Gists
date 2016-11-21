@@ -92,7 +92,7 @@ void gen_quad_wave(const int seconds, const double freq, const SDL_AudioDeviceID
 	data->pos = 0;
 	data->len = spec.freq * seconds * spec.channels;
 	data->freq = spec.freq / freq;
-	data->vol = 6000;
+	data->vol = 3000;
 	data->wave_type = WaveType::Square;
 	SDL_PauseAudioDevice(dev, 0); /* play */
 	while (data->len > 0) {
