@@ -1,5 +1,6 @@
+#include <cstring>
 #include <iostream>
-#include <string>
+
 constexpr const char* const vert = "vertebrado";
 constexpr const char* const ave = "ave";
 constexpr const char* const mami = "mamifero";
@@ -11,24 +12,18 @@ constexpr const char* const inset = "inseto";
 constexpr const char* const anel = "anelideo";
 constexpr const char* const hema = "hematofago";
 
-struct Animal
-{
-	Animal(const char* c1, const char*c2,
-		const char*c3, const char*name)
+struct Animal {
+	constexpr Animal(const char* const d1, const char* const d2,
+		const char* const d3, const char* const name)
+		: descriptions { d1, d2, d3 }, name { name }
 	{
-		classifications[0] = c1;
-		classifications[1] = c2;
-		classifications[2] = c3;
-		this->name = name;
 	}
-	
-	std::string classifications[3];
-	const char* name;
+	const char* const descriptions[3];
+	const char* const name;
 };
 
 
-static Animal animals[8] = 
-{
+constexpr const Animal animals[8] = {
 	{vert, ave, carn, "aguia"},
 	{vert, ave, oni, "pomba"},
 	{vert, mami, oni, "homem"},
@@ -39,22 +34,21 @@ static Animal animals[8] =
 	{inver, anel, oni, "minhoca"}
 
 };
-static std::string input[3];
-
 
 int main()
 {
-	
+	std::string input[3];
 	std::cin >> input[0] >> input[1] >> input[2];
-	int inputIndex = 0;
 
-	Animal *rightAnimal = nullptr;
+	int inputIndex = 0;
+	const Animal* rightAnimal = nullptr;
 	for (auto& animal : animals) {
 		bool isIt = true;
-		for (auto& str : animal.classifications) {
-			if (str != input[inputIndex++]) {
+		for (const char* const str : animal.descriptions) {
+			if (std::strcmp(str, input[inputIndex++].c_str()) != 0) {
 				isIt = false;
 				inputIndex = 0;
+				break;
 			}
 		}
 
