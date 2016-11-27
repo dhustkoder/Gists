@@ -7,55 +7,58 @@
 struct Date
 {
 	int day, hours, minutes, seconds;
-	Date operator-(Date& other);
+	Date operator-(const Date& other);
 	friend std::ostream& operator<<(std::ostream&, Date&);
 };
 
-static Date from;
-static Date to;
-
-int setDate(Date& date);
-
+static int set_date(Date& date);
 
 int main()
 {
+	Date from;
+	Date to
 
-	if (!setDate(from))
+	if (!set_date(from))
 		return -1;
-	else if (!setDate(to))
+	else if (!set_date(to))
 		return -1;
 
-	Date duration = to - from ;
+	const Date duration = to - from ;
 	std::cout << duration;
 }
 
 
-int setDate(Date& date)
+int set_date(Date& date)
 {
-	static std::string strDay, strTime;
+	std::string strDay, strTime;
 	std::getline(std::cin, strDay);
 	std::getline(std::cin, strTime);
 
-	auto isDigit = [](char x) {return std::isdigit(x); };
-
 	//search day
-	date.day = std::atoi(std::string(std::find_if(strDay.begin(), strDay.end(), isDigit), strDay.end()).c_str());
+	date.day = std::atoi(std::string(std::find_if(strDay.begin(), 
+	             strDay.end(), std::isdigit), strDay.end()).c_str());
 
 
 	// search hours
-	auto itr1 = std::find_if(strTime.begin(), strTime.end(), isDigit);
-	auto itr2 = std::find_if_not(itr1, strTime.end(), isDigit);
-	if (itr1 == strTime.end() || itr2 == strTime.end()) return 0;
+	auto itr1 = std::find_if(strTime.begin(), strTime.end(), std::isdigit);
+	auto itr2 = std::find_if_not(itr1, strTime.end(), std::isdigit);
+	
+	if (itr1 == strTime.end() || itr2 == strTime.end())
+		return 0;
+
 	date.hours = std::atoi(std::string(itr1, itr2).c_str());
 
 	// search minutes
-	itr1 = std::find_if(itr2, strTime.end(), isDigit);
-	itr2 = std::find_if_not(itr1, strTime.end(), isDigit);
-	if (itr1 == strTime.end() || itr2 == strTime.end()) return 0;
+	itr1 = std::find_if(itr2, strTime.end(), std::isdigit);
+	itr2 = std::find_if_not(itr1, strTime.end(), std::isdigit);
+	
+	if (itr1 == strTime.end() || itr2 == strTime.end())
+		return 0;
+
 	date.minutes = std::atoi(std::string(itr1, itr2).c_str());
 
 	// search seconds
-	itr1 = std::find_if(itr2, strTime.end(), isDigit);
+	itr1 = std::find_if(itr2, strTime.end(), std::isdigit);
 	date.seconds = std::atoi(std::string(itr1, strTime.end()).c_str());
 
 	// check values
@@ -69,7 +72,7 @@ int setDate(Date& date)
 }
 
 
-Date Date::operator-(Date& other)
+Date Date::operator-(const Date& other)
 {
 	Date result;
 
@@ -96,14 +99,12 @@ Date Date::operator-(Date& other)
 	}
 
 
-
-
 	return result;
 
 }
 
 
-std::ostream& operator<<(std::ostream& os, Date& date) 
+std::ostream& operator<<(std::ostream& os, const Date& date) 
 {
 	os << date.day      << " dia(s)"     << std::endl
 		<< date.hours   << " hora(s)"    << std::endl

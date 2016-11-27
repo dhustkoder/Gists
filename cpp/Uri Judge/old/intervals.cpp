@@ -2,35 +2,32 @@
 
 int main()
 {
-	enum { _0To25, _25To50, _75To100 };
-	static constexpr const char* const intervalsText[] {
+	constexpr const char* const intervalsText[] {
 		"[0,25]", "(25,50]", "(75,100]"
 	};
-	static auto getIntervalIndex = [](float x)->int 
-	{
+
+	const auto getInterval = [](const float x)->const char* {
 		if (x < 0.0)
 			return -1;
 		else if (x <= 25.0)
-			return _0To25;
+			return intervalsText[0];
 		else if (x <= 50.0)
-			return _25To50;
+			return intervalsText[1];
 		else if (x > 75.0 && x <= 100.0)
-			return _75To100;
+			return internalsText[2];
 		else
-			return -1;
+			return nullptr;
 	};
 
-	static float x;
-
+	float x;
 	std::cin >> x;
-	int index = getIntervalIndex(x);
-	if (index != -1)
-		std::cout << "Intervalo " << intervalsText[index] << std::endl;
+
+	const auto interval = getInterval(x);
+
+	if (internal != nullptr)
+		std::cout << "Intervalo " << interval << std::endl;
 	else
 		std::cout << "Fora de intervalo" << std::endl;
-
-
-
 
 	return 0;
 }
