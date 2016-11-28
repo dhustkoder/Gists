@@ -22,8 +22,7 @@ int main()
 	float x;
 	std::cin >> x;
 
-	const auto interval = getInterval(x);
-
+	const char* const interval = getInterval(x);
 	if (internal != nullptr)
 		std::cout << "Intervalo " << interval << std::endl;
 	else

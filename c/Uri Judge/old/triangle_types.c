@@ -7,22 +7,6 @@ typedef struct Sides {
 	const char* types[6];
 } Sides;
 
-void classifyTriangle(Sides*);
-
-int main()
-{
-	static Sides sides;
-	scanf("%lf %lf %lf", &sides.a, &sides.b, &sides.c);
-	classifyTriangle(&sides);
-
-	int i = 0;
-	for (; i < sides.typesSize; ++i) {
-		printf("%s\n", sides.types[i]);
-	}
-
-	return 0;
-}
-
 
 static int is_not_triangle(Sides*);
 static int is_rectangle(Sides*);
@@ -30,6 +14,20 @@ static int is_obtuse(Sides*);
 static int is_acutangle(Sides*);
 static int is_equilateral(Sides*);
 static int is_isosceles(Sides*);
+static void classify_triangle(Sides*);
+
+int main()
+{
+	static Sides sides;
+	scanf("%lf %lf %lf", &sides.a, &sides.b, &sides.c);
+	classify_triangle(&sides);
+
+	for (int i = 0; i < sides.typesSize; ++i)
+		printf("%s\n", sides.types[i]);
+
+	return 0;
+}
+
 
 void classifyTriangle(Sides* sides)
 {

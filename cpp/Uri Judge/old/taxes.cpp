@@ -1,14 +1,13 @@
 #include <iostream>
 #include <utility>
 
-using SalaryAndTax = std::pair<float, float>;
-void calcTaxes(SalaryAndTax&);
+void calc_taxes(SalaryAndTax&);
 
 int main()
 {
-	SalaryAndTax salAndTax;
+	std::pair<float, float> salAndTax;
 	std::cin >> salAndTax.first;
-	calcTaxes(salAndTax);
+	calc_taxes(salAndTax);
 
 	if (salAndTax.second == 0.00f) {
 		std::cout << "Isento" << std::endl;
@@ -19,7 +18,7 @@ int main()
 
 }
 
-void calcTaxes(SalaryAndTax &salNTax) 
+void calcTaxes(std::pair<float, float>& salNTax) 
 {
 	constexpr auto frstPercentage =  1000.00f * 0.08f;
 	constexpr auto scndPercentage =  1500.00f * 0.18f;
@@ -34,3 +33,4 @@ void calcTaxes(SalaryAndTax &salNTax)
 	else 
 		salNTax.second = trdPercentage + ((salNTax.first - 4500.00f) * 0.28f);
 }
+

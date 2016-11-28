@@ -12,5 +12,5 @@ int main()
 
 	printf("%i valores pares\n", evenCount);
 
-
+	return 0;
 }

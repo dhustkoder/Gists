@@ -10,12 +10,11 @@ int main()
 {
 	unsigned int X;
 	std::scanf("%u", &X);
-	unsigned int contimes;
 
-	for(unsigned int n = X; contimes < 6; ++n)  {
+	for(unsigned int n = X, cnt = 0; cnt < 6; ++n)  {
 		if( (n % 2) != 0 ) {
 			std::printf("%u\n", n);
-			++contimes;
+			++cnt;
 		}
 	}
 }
