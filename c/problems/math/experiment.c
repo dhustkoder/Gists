@@ -10,12 +10,12 @@ int main()
 	scanf("%d", &ninput);
 	for (i = 0; i < ninput; ++i) {
 		scanf("%d %c", &n, &type);
-		if (type == 'C')
-			rabbits += n;
-		else if (type == 'R')
-			rats += n;
-		else if (type == 'S')
-			frogs += n;
+		switch (type) {
+		case 'C': rabbits += n; break;
+		case 'R': rats += n; break;
+		case 'S': frogs += n; break;
+		default: break;
+		}
 	}
 	
 	total_animals = rabbits + rats + frogs;
