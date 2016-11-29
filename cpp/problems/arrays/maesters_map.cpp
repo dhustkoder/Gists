@@ -1,22 +1,25 @@
 #include <iostream>
-
+#include <algorithm>
 
 int main()
 {
 	int x, y;
-	int known_points_sz = 0;
+	int known_offsets_sz = 0;
 	std::cin >> x >> y;
 	char* const vec = new char[(x + 1) * y];
-	int* const known_points = new int[x * y];
-
-	const auto is_known_point =
-	[&known_points_sz, known_points](const int offset) {
-		for (int i = 0; i < known_points_sz; ++i) {
-			if (known_points[i] == offset)
-				return true;
-		}
-		return false;
+	int* const known_offsets = new int[x * y];
+	
+	const auto is_known_offset = 
+	[&known_offsets_sz, known_offsets](const int offset) {
+		const auto begin = &known_offsets[0];
+		const auto end = begin + known_offsets_sz;
+		return std::find(begin, end, offset) != end;
 	};
+	const auto add_known_offset =
+	[&known_offsets_sz, known_offsets](const int offset) {
+		known_offsets[known_offsets_sz++] = offset;
+	};
+
 	for (int i = 0; i < y; ++i)
 		std::cin >> &vec[i * x];
 
@@ -31,10 +34,10 @@ int main()
 		  map_char == '.' ? last_char : (new_char = map_char);
 
 		if (last_char != new_char) {
-			if (is_known_point(offset)) {
+			if (is_known_offset(offset)) {
 				break;
 			} else {
-				known_points[known_points_sz++] = offset;
+				add_known_offset(offset);
 				last_char = new_char;
 			}
 		}
@@ -56,8 +59,8 @@ int main()
 	else
 		std::cout << "!\n";
 
+	delete[] known_offsets;
 	delete[] vec;
-	delete[] known_points;
 	return 0;
 }
 
