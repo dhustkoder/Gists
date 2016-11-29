@@ -5,7 +5,7 @@
 int main()
 {
 	int64_t a, b;
-	while (scanf("%" PRId64 " %" PRId64, &a, &b) != EOF) {
+	while (scanf("%" SCNd64 " %" SCNd64, &a, &b) != EOF) {
 		if (a > b)
 			printf("%" PRId64 "\n", a - b);
 		else
