@@ -55,6 +55,7 @@ int main()
 		case '<': --x; break;
 		case '^': --y; break;
 		case '*': found = true; break;
+		default: break;
 		}
 
 	} while (!found && x >= 0 && x < width && y >= 0 && y < height);
