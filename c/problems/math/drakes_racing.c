@@ -1,20 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
-	long drakes, races, div, left, divider;
+	long drakes, races, denom;
+	div_t divr;
 	scanf("%ld", &drakes);
 
 	while (drakes > 0) {
 		races = 0;
+		
 		while (drakes > 1) {
-			divider = drakes > 2 ? 3 : 2;
-			div = drakes / divider;
-			left = (drakes % divider);
-			left = left > 1 ? left / 2 : left;
-			drakes = div + left;
+			denom = drakes > 2 ? 3 : 2;
+			divr = div(drakes, denom);
+			drakes = divr.quot + (divr.rem > 1 ? 1 : divr.rem);
 			races += drakes;
-		}	
+		}
+
 		printf("%ld\n", races);
 		scanf("%ld", &drakes);
 	}
