@@ -3,22 +3,26 @@
 int main(void)
 {
 	const char* const base32_digits = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
-	char base32_str[128];
-	base32_str[127] = '\0';
-	unsigned long long number;
+	char base32_str[16];
+	base32_str[15] = '\0';
 	int str_index;
+	unsigned long long input, number;
 
-	scanf("%llu", &number);
-	while (number > 0) {
-		str_index = 126;
+	do {
+		scanf("%llu", &input);
+		
+		number = input;
+		str_index = 14;
+		
 		do {
 			base32_str[str_index--] = base32_digits[number % 32];
 			number /= 32;
 		}  while (number > 0);
+
 		printf("%s\n", &base32_str[str_index + 1]);
-		scanf("%llu", &number);
-	};
-	puts("0");
+
+	} while (input > 0);
+
 	return 0;
 }
 
