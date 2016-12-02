@@ -9,8 +9,8 @@ typedef struct Game {
 		char body[7];
 		int errors;
 	} gallow;
-	const char* correct_word;
-	char* hidden_word;
+	const char* const correct_word;
+	char* const hidden_word;
 } Game;
 
 static const char* const words[] = { "control", "television", "computer" };
@@ -18,15 +18,22 @@ static const char* const words[] = { "control", "television", "computer" };
 static int init_game(Game* game)
 {
 	srand(time(NULL));
+	
 	*game = (Game) { .gallow.body = {'\0'}, .gallow.errors = 0 };
+
 	const int word_idx = rand() % (sizeof(words)/sizeof(const char* const));
+	
 	*((const char**)&game->correct_word) = words[word_idx];
+	
 	const size_t word_size = sizeof(char) * strlen(game->correct_word);
+	
 	*((char**)&game->hidden_word) = malloc(word_size + 1);
+
 	if (game->hidden_word == NULL) {
 		perror("failed to allocate memory: ");
 		return -1;
 	}
+
 	memset(game->hidden_word, '_', word_size);
 	game->hidden_word[word_size] = '\0';
 	return 0;
