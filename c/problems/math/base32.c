@@ -2,29 +2,23 @@
 
 int main(void)
 {
-	char base_32_digits[32] = {
-		'0', '1', '2', '3', '4', '5', '6', '7',
-	  	'8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-	  	'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-	  	'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V'
-	};
+	const char* const base32_digits = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
+	char base32_str[128];
+	base32_str[127] = '\0';
+	unsigned long long number;
+	int str_index;
 
-	char converted_str[128];
-	converted_str[127] = '\0';
-	int index;
-	unsigned long long number_to_convert;
-
-	scanf("%llu", &number_to_convert);
-	while (number_to_convert > 0) {
-		index = 126;
+	scanf("%llu", &number);
+	while (number > 0) {
+		str_index = 126;
 		do {
-			converted_str[index--] = 
-				base_32_digits[number_to_convert % 32];
-			number_to_convert /= 32;
-		}  while (number_to_convert > 0);
-		printf("%s\n", &converted_str[index + 1]);
-		scanf("%llu", &number_to_convert);
+			base32_str[str_index--] = base32_digits[number % 32];
+			number /= 32;
+		}  while (number > 0);
+		printf("%s\n", &base32_str[str_index + 1]);
+		scanf("%llu", &number);
 	};
-
+	puts("0");
 	return 0;
 }
+
