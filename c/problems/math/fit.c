@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	unsigned long int ninput, first, second, i, j;
 	scanf("%lu", &ninput);

@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	int ninput, i, j, x, y;
 	int begin, end;

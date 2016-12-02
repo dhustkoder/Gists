@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	int highest = 0, pos = 0, input, i;
 	for (i = 1; i <= 100; ++i) {

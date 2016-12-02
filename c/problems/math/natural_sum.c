@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	long long a, b, sum;
 	scanf("%lld %lld", &a, &b);

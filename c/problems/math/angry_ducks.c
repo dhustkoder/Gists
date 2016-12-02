@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-int main()
+int main(void)
 {
 	const long double g = 9.80665;
 	const long double pi = 3.14159;

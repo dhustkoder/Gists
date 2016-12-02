@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-int main()
+int main(void)
 {
 	int64_t a, b;
 	while (scanf("%" SCNd64 " %" SCNd64, &a, &b) != EOF) {

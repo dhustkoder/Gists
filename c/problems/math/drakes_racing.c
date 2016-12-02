@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
+int main(void)
 {
 	long drakes, races, denom;
 	div_t divr;
