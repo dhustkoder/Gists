@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	const int leds_num[10] = { 6, 2, 5, 5, 4, 5, 6, 3, 7, 6 };
 	char buffer[110];
