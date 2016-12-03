@@ -27,7 +27,7 @@ const char* get_bin_str(int number)
 }
 
 
-int main()
+int main(void)
 {
 	int inputSize;
 	int input;
@@ -38,6 +38,7 @@ int main()
 	for( ; inputSize; --inputSize) {
 		fgets(inputLine, sizeof(inputLine), stdin);
 		printf("Case %d:\n", ++i);
+
 		switch(inputLine[strlen(inputLine) - 2]) {
 		case 'c':
 			sscanf(inputLine, "%d", &input); 
@@ -53,6 +54,7 @@ int main()
 			printf("%d dec\n%x hex\n", input, input); 
 			break;
 		}
+
 		printf("\n");
 	}
 

@@ -3,7 +3,7 @@
 
 static int bhask(float a, float b, float c, float* r1, float* r2);
 
-int main()
+int main(void)
 {
 	float a = 0, b = 0, c = 0;
 	float r1 = 0, r2 = 0;

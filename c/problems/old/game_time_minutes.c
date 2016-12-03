@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-int main()
+int main(void)
 {
 	enum { hfrom, mfrom, hto, mto, htotal, mtotal };
 	static int times[6];
@@ -9,8 +9,8 @@ int main()
 	scanf("%i %i %i %i", &times[hfrom],
 		&times[mfrom], &times[hto], &times[mto]);
 
-	int i = 0;
-	for (; i < hto + 1; ++i) {
+	int i;
+	for (i = 0; i < hto + 1; ++i) {
 		if (times[i] == 0 && (i == hfrom || i == hto))
 			times[i] = 24;
 	}

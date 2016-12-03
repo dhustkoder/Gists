@@ -9,7 +9,7 @@
 
 
 
-int main(int argc, char** argv)
+int main()
 {
 	unsigned int X;
 	scanf("%u", &X);

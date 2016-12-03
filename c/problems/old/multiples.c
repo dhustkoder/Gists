@@ -5,7 +5,7 @@ inline int is_multiple(const int a, const int b)
 	return (a % b == 0) || (b % a == 0);
 }
 
-int main()
+int main(void)
 {
 	int a, b;
 	scanf("%i %i", &a, &b);

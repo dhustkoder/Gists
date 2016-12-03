@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-int main()
+int main(void)
 {
 
 	int i;
@@ -21,4 +21,6 @@ int main()
 		printf("%.1f\n", posTotal / posCount);
 	else
 		printf("0\n");
+
+	return 0;
 }

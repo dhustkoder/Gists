@@ -6,7 +6,7 @@ typedef struct Sides {
 
 int is_triangle(sides_t*);
 
-int main()
+int main(void)
 {
 	sides_t sides;
 	scanf("%f %f %f", &sides.a, &sides.b, &sides.c);

@@ -1,18 +1,16 @@
 #include <stdio.h>
 
 
-int main()
+int main(void)
 {
-	while(1) {
-		int input;
+	int input;
+	scanf("%i", &input);
+
+	while (input != 2002) {
+		printf("Senha Invalida\n");
 		scanf("%i", &input);
-		if(input != 2002) {
-			printf("Senha Invalida\n");
-		} else {
-			printf("Acesso Permitido\n");
-			break;
-		}
-	}
+	};
 	
-    return 0;
+	printf("Acesso Permitido\n");	
+	return 0;
 }

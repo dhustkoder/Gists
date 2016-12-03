@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-int main()
+int main(void)
 {
 
 	float x, y;
@@ -22,6 +22,6 @@ int main()
 	else if (x < 0 && y >  0)
 		printf("Q2");
 
-	printf("\n");
+	putchar('\n');
 	return 0;
 }

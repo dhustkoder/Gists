@@ -4,8 +4,7 @@
 #include <string>
 
 
-struct Date
-{
+struct Date {
 	int day, hours, minutes, seconds;
 	Date operator-(const Date& other);
 	friend std::ostream& operator<<(std::ostream&, Date&);

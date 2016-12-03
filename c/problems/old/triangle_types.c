@@ -16,13 +16,14 @@ static int is_equilateral(Sides*);
 static int is_isosceles(Sides*);
 static void classify_triangle(Sides*);
 
-int main()
+int main(void)
 {
 	static Sides sides;
+	int i;
 	scanf("%lf %lf %lf", &sides.a, &sides.b, &sides.c);
 	classify_triangle(&sides);
 
-	for (int i = 0; i < sides.typesSize; ++i)
+	for (i = 0; i < sides.typesSize; ++i)
 		printf("%s\n", sides.types[i]);
 
 	return 0;

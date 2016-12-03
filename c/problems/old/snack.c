@@ -1,11 +1,12 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	enum PriceIndex { 
 		Hotdog, SaladCheese, BaconCheese, 
 		SimpleToast, Soda 
 	};
+
 	const float prices[5] = { 4.00, 4.50, 5.00, 2.00, 1.50 };
 	enum PriceIndex x = 0;
 	int qnt = 0;

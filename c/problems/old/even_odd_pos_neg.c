@@ -1,16 +1,17 @@
 #include <stdio.h>
 
 
-int main()
+int main(void)
 {
 	enum { evens, odds, positives, negatives };
 	int results[4];
 	int input[5];
+	int i;
 
-	scanf("%i%*c%i%*c%i%*c%i%*c%i", &input[0], &input[1],
+	scanf("%i %i %i %i %i", &input[0], &input[1],
 	      &input[2], &input[3], &input[4]);
 
-	for(int i = 0; i < 5; ++i) {
+	for(i = 0; i < 5; ++i) {
 		if(input[i] == 0) {
 			++results[evens];
 			continue;

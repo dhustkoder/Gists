@@ -17,7 +17,7 @@ static int carl_func(const int x, const int y)
 }
 
 
-int main()
+int main(void)
 {
 	int inputsz;
 	int inX, inY, r, b, c;

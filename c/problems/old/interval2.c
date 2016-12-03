@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	int in = 0;
 	int out = 0;
@@ -16,4 +16,5 @@ int main()
 	}
 
 	printf("%i in\n%i out\n", in, out);
+	return 0;
 }

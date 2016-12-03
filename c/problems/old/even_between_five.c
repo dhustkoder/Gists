@@ -1,10 +1,11 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
 	int input;
 	int evenCount = 0;
-	for(int i = 0; i < 5 ; ++i) {
+	int i;
+	for(i = 0; i < 5 ; ++i) {
 		scanf("%i", &input);
 		if((input % 2) == 0)
 			++evenCount;
