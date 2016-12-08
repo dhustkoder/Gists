@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-
-float read_note()
+static float read_note(void)
 {
 	float note;
 	
@@ -19,6 +18,7 @@ int main(void)
 {
 	float a = read_note();
 	float b = read_note();
-	return printf("media = %.2f\n", (a + b) / 2);
+	printf("media = %.2f\n", (a + b) / 2);
+	return 0;
 }
 
