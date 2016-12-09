@@ -11,10 +11,8 @@ int main(void)
 	scanf("%d %d", &x, &y);
 	
 	for (i = 1; i <= y; ++i) {
-		if ((i % x) != 0)
-			buffer_itr += sprintf(buffer_itr, "%d ", i);
-		else
-			buffer_itr += sprintf(buffer_itr, "%d\n", i);
+		buffer_itr += 
+		  sprintf(buffer_itr, ((i % x) != 0) ? "%d " : "%d\n", i);
 	}
 
 	printf("%s", buffer);
