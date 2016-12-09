@@ -1,13 +1,11 @@
 #include <stdio.h>
-#include <stdlib.h>
+
+static char buffer[600000];
 
 int main(void)
 {
 	int x, y, i;
-	char* buffer;
-	char* buffer_itr;
-
-	buffer = buffer_itr = malloc(sizeof(char) * 600000);
+	char* buffer_itr = &buffer[0];
 	scanf("%d %d", &x, &y);
 	
 	for (i = 1; i <= y; ++i) {
@@ -16,7 +14,6 @@ int main(void)
 	}
 
 	printf("%s", buffer);
-	free(buffer);
 	return 0;
 }
 
