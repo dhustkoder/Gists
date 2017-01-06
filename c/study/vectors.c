@@ -14,7 +14,7 @@ inline float get_magnitude(const vec2f_t* const v)
 
 inline vec2f_t get_diff(const vec2f_t* const from, const vec2f_t* const to)
 {
-	const vec2f_t result = { .x = to->x - from->x, .y = to->y - from->y };
+	const vec2f_t result = { to->x - from->x, to->y - from->y };
 	return result;
 }
 
@@ -26,11 +26,11 @@ int main(int argc, char** argv)
 		return EXIT_SUCCESS;
 	}
 
-	const vec2f_t a = { .x = strtof(argv[1], NULL), .y = strtof(argv[2], NULL) };
+	const vec2f_t a = { strtof(argv[1], NULL), strtof(argv[2], NULL) };
 	const vec2f_t b = { strtof(argv[3], NULL), strtof(argv[4], NULL) };
 
 	const vec2f_t a_to_b_diff = get_diff(&a, &b);
-	const vec2f_t b_to_a_diff = { .x = -a_to_b_diff.x, .y = -a_to_b_diff.y };
+	const vec2f_t b_to_a_diff = { -a_to_b_diff.x, -a_to_b_diff.y };
 
 	const float a_magnitude = get_magnitude(&a);
 	const float b_magnitude = get_magnitude(&b);
