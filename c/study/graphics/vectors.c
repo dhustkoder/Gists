@@ -23,6 +23,11 @@ inline vec2f_t sub_vec2f(const vec2f_t a, const vec2f_t b)
 }
 
 
+inline float dot_vec2f(const vec2f_t a, const vec2f_t b)
+{
+	return (a.x * b.x) + (a.y * b.y);
+}
+
 
 inline vec2f_t unit_vec2f(const vec2f_t v, const float mag)
 {
@@ -76,17 +81,21 @@ int main(int argc, char** argv)
 	const vec2f_t a_unit = unit_vec2f(a, a_mag);
 	const vec2f_t b_unit = unit_vec2f(b, b_mag);
 
+	const float lengths = a_mag * b_mag;
+	const float angle = acos(dot_vec2f(a, b) / lengths);
+
 	printf("a => (%.2f, %.2f)\n"
 	       "b => (%.2f, %.2f)\n"
-	       "a magnitude => %.2f\n"
-	       "b magnitude => %.2f\n"
-	       "a to b diff => (%.2f, %.2f)\n"
-	       "b to a diff => (%.2f, %.2f)\n"
-	       "diff magnitude => %.2f\n"
+	       "||a|| => %.2f\n"
+	       "||b|| => %.2f\n"
+	       "b - a => (%.2f, %.2f)\n"
+	       "a - b => (%.2f, %.2f)\n"
+	       "||b - a|| => %.2f\n"
 	       "a + b => (%.2f, %.2f)\n"
 	       "a - b => (%.2f, %.2f)\n"
 	       "unit from a => (%.2f, %.2f)\n"
-	       "unit from b => (%.2f, %.2f)\n",
+	       "unit from b => (%.2f, %.2f)\n"
+	       "angle between a and b => %f\n",
 	       a.x, a.y,
 	       b.x, b.y,
 	       a_mag, b_mag,
@@ -96,7 +105,8 @@ int main(int argc, char** argv)
 	       ab_sum.x, ab_sum.y,
 	       ab_sub.x, ab_sub.y,
 	       a_unit.x, a_unit.y,
-	       b_unit.x, b_unit.y);
+	       b_unit.x, b_unit.y,
+	       angle);
 
 
 	return EXIT_SUCCESS;
