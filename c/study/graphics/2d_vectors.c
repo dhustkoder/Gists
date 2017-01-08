@@ -3,9 +3,12 @@
 #include <math.h>
 #include <assert.h>
 
-typedef struct Vector2f {
+struct Vector2f {
 	float x, y;
-} vec2f_t;
+};
+
+typedef struct Vector2f vec2f_t;
+
 
 
 inline vec2f_t add_vec2f(const vec2f_t a, const vec2f_t b)
@@ -13,7 +16,6 @@ inline vec2f_t add_vec2f(const vec2f_t a, const vec2f_t b)
 	const vec2f_t result = { a.x + b.x, a.y + b.y };
 	return result;
 }
-
 
 
 inline vec2f_t sub_vec2f(const vec2f_t a, const vec2f_t b)
@@ -36,7 +38,6 @@ inline vec2f_t unit_vec2f(const vec2f_t v, const float mag)
 }
 
 
-
 inline vec2f_t neg_vec2f(const vec2f_t v)
 {
 	const vec2f_t result = { -v.x, -v.y };
@@ -44,8 +45,7 @@ inline vec2f_t neg_vec2f(const vec2f_t v)
 }
 
 
-
-inline float mag_vec2f(const vec2f_t v)
+inline float len_vec2f(const vec2f_t v)
 {
 	return sqrtf((v.x * v.x) + (v.y * v.y));
 }
@@ -69,43 +69,37 @@ int main(int argc, char** argv)
 
 	const vec2f_t a = { strtof(argv[1], NULL), strtof(argv[2], NULL) };
 	const vec2f_t b = { strtof(argv[3], NULL), strtof(argv[4], NULL) };
+
 	const vec2f_t ab_sum = add_vec2f(a, b);
-	const vec2f_t ab_sub = sub_vec2f(a, b);
+	const vec2f_t ba_sub = sub_vec2f(b, a);
 
-	const vec2f_t diff = diff_vec2f(a, b);
-	const vec2f_t negdiff = neg_vec2f(diff);
+	const float a_len = len_vec2f(a);
+	const float b_len = len_vec2f(b);
+	const float diff_len = len_vec2f(ba_sub);
 
-	const float a_mag = mag_vec2f(a);
-	const float b_mag = mag_vec2f(b);
-	const float diff_mag = mag_vec2f(diff);
-	const vec2f_t a_unit = unit_vec2f(a, a_mag);
-	const vec2f_t b_unit = unit_vec2f(b, b_mag);
+	const vec2f_t a_unit = unit_vec2f(a, a_len);
+	const vec2f_t b_unit = unit_vec2f(b, b_len);
 
-	const float lengths = a_mag * b_mag;
-	const float radians = acos(dot_vec2f(a, b) / lengths);
+	const float radians = acos(dot_vec2f(a, b) / (a_len * b_len));
 	const float degrees = radians * (180 / 3.141592);
 
 	printf("a => (%.2f, %.2f)\n"
 	       "b => (%.2f, %.2f)\n"
 	       "||a|| => %.2f\n"
 	       "||b|| => %.2f\n"
-	       "b - a => (%.2f, %.2f)\n"
-	       "a - b => (%.2f, %.2f)\n"
-	       "||b - a|| => %.2f\n"
 	       "a + b => (%.2f, %.2f)\n"
-	       "a - b => (%.2f, %.2f)\n"
+	       "b - a => (%.2f, %.2f)\n"
+	       "||b - a|| => %.2f\n"
 	       "unit from a => (%.2f, %.2f)\n"
 	       "unit from b => (%.2f, %.2f)\n"
 	       "angle between a and b => %f radians\n"
 	       "angle between a and b => %.1f degrees\n",
 	       a.x, a.y,
 	       b.x, b.y,
-	       a_mag, b_mag,
-	       diff.x, diff.y,
-	       negdiff.x, negdiff.y,
-	       diff_mag,
+	       a_len, b_len,
 	       ab_sum.x, ab_sum.y,
-	       ab_sub.x, ab_sub.y,
+	       ba_sub.x, ba_sub.y,
+	       diff_len,
 	       a_unit.x, a_unit.y,
 	       b_unit.x, b_unit.y,
 	       radians, degrees);
