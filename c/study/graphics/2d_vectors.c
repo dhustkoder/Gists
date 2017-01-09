@@ -80,7 +80,8 @@ int main(int argc, char** argv)
 	const vec2f_t a_unit = unit_vec2f(a, a_len);
 	const vec2f_t b_unit = unit_vec2f(b, b_len);
 
-	const float radians = acos(dot_vec2f(a, b) / (a_len * b_len));
+	const float dot_prod = dot_vec2f(a, b);
+	const float radians = acos(dot_prod / (a_len * b_len));
 	const float degrees = radians * (180 / 3.141592);
 
 	printf("a => (%.2f, %.2f)\n"
@@ -92,6 +93,7 @@ int main(int argc, char** argv)
 	       "||b - a|| => %.2f\n"
 	       "unit from a => (%.2f, %.2f)\n"
 	       "unit from b => (%.2f, %.2f)\n"
+	       "dot product between a and b => %.2f\n"
 	       "angle between a and b => %f radians\n"
 	       "angle between a and b => %.1f degrees\n",
 	       a.x, a.y,
@@ -102,7 +104,7 @@ int main(int argc, char** argv)
 	       diff_len,
 	       a_unit.x, a_unit.y,
 	       b_unit.x, b_unit.y,
-	       radians, degrees);
+	       dot_prod, radians, degrees);
 
 
 	return EXIT_SUCCESS;
