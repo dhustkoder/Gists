@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>
 
-static const float kPI = 3.141592;
+static const float kPI = 3.14159265359;
 
 struct Vector2f {
 	float x, y;
