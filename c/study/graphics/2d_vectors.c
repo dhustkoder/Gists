@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 	const vec2f_t b_unit = unit_vec2f(b, b_len);
 	const float unit_dot_prod = dot_vec2f(a_unit, b_unit);
 	const float unit_radians = acosf(unit_dot_prod);
-	const float unit_degrees = radians * (180 / kPI);
+	const float unit_degrees = unit_radians * (180 / kPI);
 
 
 	printf("VECTORS:\n"
