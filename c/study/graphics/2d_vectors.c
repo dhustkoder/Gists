@@ -33,9 +33,9 @@ inline float dot_vec2f(const vec2f_t a, const vec2f_t b)
 }
 
 
-inline vec2f_t unit_vec2f(const vec2f_t v, const float mag)
+inline vec2f_t unit_vec2f(const vec2f_t v, const float len)
 {
-	const vec2f_t result = { v.x / mag, v.y / mag };
+	const vec2f_t result = { v.x / len, v.y / len };
 	return result;
 }
 
