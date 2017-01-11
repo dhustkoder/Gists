@@ -32,6 +32,16 @@ inline mat2f_t sub_scalar_mat2f(const mat2f_t m, const float scalar)
 }
 
 
+inline mat2f_t mul_scalar_mat2f(const mat2f_t m, const float scalar)
+{
+	const mat2f_t result = {{
+		{ m.data[0][0] * scalar, m.data[0][1] * scalar },
+		{ m.data[1][0] * scalar, m.data[1][1] * scalar }
+	}};
+	return result;
+}
+
+
 inline mat2f_t add_mat2f(const mat2f_t a, const mat2f_t b)
 {
 	const mat2f_t result = {{
@@ -53,6 +63,19 @@ inline mat2f_t sub_mat2f(const mat2f_t a, const mat2f_t b)
 	return result;
 }
 
+
+inline mat2f_t mul_mat2f(const mat2f_t a, const mat2f_t b)
+{
+	const mat2f_t result = {{
+		{ a.data[0][0] * b.data[0][0] + a.data[0][1] * b.data[1][0],
+		  a.data[0][0] * b.data[0][1] + a.data[0][1] * b.data[1][1] },
+
+		{ a.data[1][0] * b.data[0][0] + a.data[1][1] * b.data[1][0],
+		  a.data[1][0] * b.data[0][1] + a.data[1][1] * b.data[1][1] }
+	}};
+
+	return result;
+}
 
 
 int main(int argc, char** argv)
@@ -77,10 +100,13 @@ int main(int argc, char** argv)
 
 	const mat2f_t ab_sum = add_mat2f(a, b);
 	const mat2f_t ab_sub = sub_mat2f(a, b);
+	const mat2f_t ab_mul = mul_mat2f(a, b);
 	const mat2f_t a_add_scalar = add_scalar_mat2f(a, scalar);
 	const mat2f_t b_add_scalar = add_scalar_mat2f(b, scalar);
 	const mat2f_t a_sub_scalar = sub_scalar_mat2f(a, scalar);
 	const mat2f_t b_sub_scalar = sub_scalar_mat2f(b, scalar);
+	const mat2f_t a_mul_scalar = mul_scalar_mat2f(a, scalar);
+	const mat2f_t b_mul_scalar = mul_scalar_mat2f(b, scalar);
 
 	printf("MATRICES:\n"
 	       "a => |%f %f|\n"
@@ -92,6 +118,8 @@ int main(int argc, char** argv)
 	       "        |%f %f|\n\n"
 	       "a - b = |%f %f|\n"
 	       "        |%f %f|\n\n"
+	       "a * b = |%f %f|\n"
+	       "        |%f %f|\n\n"
 	       "a + scalar = |%f %f|\n"
 	       "             |%f %f|\n\n"
 	       "a - scalar = |%f %f|\n"
@@ -99,6 +127,10 @@ int main(int argc, char** argv)
 	       "b + scalar = |%f %f|\n"
 	       "             |%f %f|\n\n"
 	       "b - scalar = |%f %f|\n"
+	       "             |%f %f|\n\n"
+	       "a * scalar = |%f %f|\n"
+	       "             |%f %f|\n\n"
+	       "b * scalar = |%f %f|\n"
 	       "             |%f %f|\n\n",
 
 	       a.data[0][0], a.data[0][1],
@@ -115,6 +147,9 @@ int main(int argc, char** argv)
 	       ab_sub.data[0][0], ab_sub.data[0][1],
 	       ab_sub.data[1][0], ab_sub.data[1][1],
 
+	       ab_mul.data[0][0], ab_mul.data[0][1],
+	       ab_mul.data[1][0], ab_mul.data[1][1],
+
 	       a_add_scalar.data[0][0], a_add_scalar.data[0][1],
 	       a_add_scalar.data[1][0], a_add_scalar.data[1][1],
 
@@ -125,7 +160,13 @@ int main(int argc, char** argv)
 	       b_add_scalar.data[1][0], b_add_scalar.data[1][1],
 
 	       b_sub_scalar.data[0][0], b_sub_scalar.data[0][1],
-	       b_sub_scalar.data[1][0], b_sub_scalar.data[1][1]);
+	       b_sub_scalar.data[1][0], b_sub_scalar.data[1][1],
+
+	       a_mul_scalar.data[0][0], a_mul_scalar.data[0][1],
+	       a_mul_scalar.data[1][0], a_mul_scalar.data[1][1],
+	       
+	       b_mul_scalar.data[0][0], b_mul_scalar.data[0][1],
+	       b_mul_scalar.data[1][0], b_mul_scalar.data[1][1]);
 
 
 	return EXIT_SUCCESS;
