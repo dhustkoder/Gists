@@ -1,52 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include "vectors.h"
 
-static const float kPI = 3.14159265359;
-
-struct Vector3f {
-	float x, y, z;
-};
-
-typedef struct Vector3f vec3f_t;
-
-
-inline vec3f_t add_vec3f(const vec3f_t a, const vec3f_t b)
-{
-	const vec3f_t result = { a.x + b.x, a.y + b.y, a.z + b.z };
-	return result;
-}
-
-
-inline vec3f_t sub_vec3f(const vec3f_t a, const vec3f_t b)
-{
-	const vec3f_t result = { a.x - b.x, a.y - b.y, a.z - b.z };
-	return result;
-}
-
-
-inline vec3f_t cross_vec3f(const vec3f_t a, const vec3f_t b)
-{
-	const vec3f_t result = {
-		(a.y * b.z) - (a.z * b.y),
-		(a.z * b.x) - (a.x * b.z),
-		(a.x * b.y) - (a.y * b.x)
-	};
-
-	return result;
-}
-
-
-inline float dot_vec3f(const vec3f_t a, const vec3f_t b)
-{
-	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
-}
-
-
-inline float len_vec3f(const vec3f_t v)
-{
-	return sqrtf((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
-}
 
 
 int main(int argc, char** argv)

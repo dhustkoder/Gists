@@ -1,65 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <assert.h>
-
-static const float kPI = 3.14159265359;
-
-struct Vector2f {
-	float x, y;
-};
-
-typedef struct Vector2f vec2f_t;
-
-
-
-inline vec2f_t add_vec2f(const vec2f_t a, const vec2f_t b)
-{
-	const vec2f_t result = { a.x + b.x, a.y + b.y };
-	return result;
-}
-
-
-inline vec2f_t sub_vec2f(const vec2f_t a, const vec2f_t b)
-{
-	const vec2f_t result = { a.x - b.x, a.y - b.y };
-	return result;
-}
-
-
-inline float dot_vec2f(const vec2f_t a, const vec2f_t b)
-{
-	return (a.x * b.x) + (a.y * b.y);
-}
-
-
-inline vec2f_t unit_vec2f(const vec2f_t v, const float len)
-{
-	const vec2f_t result = { v.x / len, v.y / len };
-	return result;
-}
-
-
-inline vec2f_t neg_vec2f(const vec2f_t v)
-{
-	const vec2f_t result = { -v.x, -v.y };
-	return result;
-}
-
-
-inline float len_vec2f(const vec2f_t v)
-{
-	return sqrtf((v.x * v.x) + (v.y * v.y));
-}
-
-
-
-inline vec2f_t diff_vec2f(const vec2f_t from, const vec2f_t to)
-{
-	return sub_vec2f(to, from);
-}
-
-
+#include "vectors.h"
 
 int main(int argc, char** argv)
 {
