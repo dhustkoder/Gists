@@ -25,5 +25,7 @@ int main(void)
 
 		printf("%ld %s primo\n", number, is_prime ? "eh" : "nao eh");
 	}
+
+	return 0;
 }
 
