@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Fib {
+
+typedef struct fib_t {
 	int n;
 	unsigned long long r;
-};
+} fib_t;
 
 
-inline struct Fib calc_fib(const int n)
+inline fib_t fib(const int n)
 {
-	struct Fib ret;
-	
+	fib_t ret;
+
+	int i;
+	unsigned long long aux;
 	unsigned long long prev = 0;
 	unsigned long long cur = 1;
-	unsigned long long aux;
-	int i;
+
 
 	if (n > 0) {
 
@@ -38,23 +40,25 @@ inline struct Fib calc_fib(const int n)
 }
 
 
-int main (void)
+int main(void)
 {
-	struct Fib* array;
-	int testcount;
+	fib_t* array;
+
+	int num_tests;
 	int n;
 	int i;
 
-	scanf("%d", &testcount);
+	
+	scanf("%d", &num_tests);
 
-	array = malloc(sizeof(struct Fib) * testcount);
+	array = malloc(sizeof(fib_t) * num_tests);
 
-	for (i = 0; i < testcount; ++i) {
+	for (i = 0; i < num_tests; ++i) {
 		scanf("%d", &n);
-		array[i] = calc_fib(n);
+		array[i] = fib(n);
 	}
 
-	for (i = 0; i < testcount; ++i)
+	for (i = 0; i < num_tests; ++i)
 		printf("Fib(%d) = %llu\n", array[i].n, array[i].r);
 
 	free(array);
