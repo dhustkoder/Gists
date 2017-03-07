@@ -7,19 +7,22 @@ int main(void)
 	int i;
 	int t;
 	long years;
-	double pa, pb;
+	int pa, pb;
 	double g1, g2;
 
 	scanf("%d", &t);
 
 	for (i = 0; i < t; ++i) {
 
-		scanf("%lf %lf %lf %lf", &pa, &pb, &g1, &g2);
+		scanf("%d %d %lf %lf", &pa, &pb, &g1, &g2);
 		years = 0;
 		
 		do {
-			pa += (int) ((pa * g1) / 100.0);
-			pb += (int) ((pb * g2) / 100.0);
+			// floating point to int cast truncates toward 0
+			// we're dealing with positive values, then the effect
+			// is the same as floor
+			pa += ((pa * g1) / 100.0);
+			pb += ((pb * g2) / 100.0);
 			++years;
 
 			if (years > 100)
