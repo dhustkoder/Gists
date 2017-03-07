@@ -18,8 +18,8 @@ int main(void)
 		years = 0;
 		
 		do {
-			pa += floor((pa * g1) / 100.0);
-			pb += floor((pb * g2) / 100.0);
+			pa += (int) ((pa * g1) / 100.0);
+			pb += (int) ((pb * g2) / 100.0);
 			++years;
 
 			if (years > 100)
