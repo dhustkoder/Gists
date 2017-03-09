@@ -2,44 +2,26 @@
 #include <stdlib.h>
 
 
-inline float sum(const float values[12])
-{
-	int i;
-	float res = 0;
-
-	for (i = 0; i < 12; ++i)
-		res += values[i];
-
-	return res;
-}
-
-
 int main(void)
 {
 	int i, j;
 	char op;
-	float values[12];
-	float result;
+	float value;
+	float result = 0;
 
 	scanf("%c\n", &op);
 
-	for (j = 0; j < 12; ++j) {
-
-		for (i = 0; i < j; ++i)
+	for (i = 0; i < 12; ++i) {
+		for (j = 0; j <= i; ++j)
 			scanf("%*f");
 
-		scanf("%f", &values[j]);
-		
-		for (++i; i < 12; ++i)
-			scanf("%*f");
+		for (; j < 12; ++j) {
+			scanf("%f", &value);
+			result += value;
+		}
 	}
 
-	if (op == 'S')
-		result = sum(values);
-	else
-		result = sum(values) / 12;
-
-	printf("%.1f\n", result);
+	printf("%.1f\n", op == 'M' ? result / 66 : result);
 
 	return EXIT_SUCCESS;
 }
