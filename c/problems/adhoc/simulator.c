@@ -16,7 +16,7 @@ static char vars_names[VARS_SIZE][9];
 static long vars_values[VARS_SIZE];
 
 
-static bool isletter(char c)
+static bool isletter(const char c)
 {
 	return c >= 'a' && c <= 'z';
 }
