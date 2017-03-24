@@ -73,7 +73,6 @@ int main(void)
 		}
 	}
 
-
 	printf("%ld\n", *var);
 
 	return EXIT_SUCCESS;
