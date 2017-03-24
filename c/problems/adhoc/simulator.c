@@ -15,6 +15,7 @@ static int vars_idx = 0;
 static char vars_names[VARS_SIZE][9];
 static long vars_values[VARS_SIZE];
 
+
 static bool isletter(char c)
 {
 	return c >= 'a' && c <= 'z';
