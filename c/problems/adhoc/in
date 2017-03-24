@@ -1,6 +1,4 @@
-a := 0
-b := 1
-c := a + b
-d := a + b
-e := a + c
-f := 7
+two := 2
+one := 1
+three := two + one
+five := three + two
