@@ -76,7 +76,7 @@ int main(void)
 		}
 	}
 
-	printf("%ld\n", *var);
+	printf("%ld\n", var != NULL ? *var : 0);
 
 	return EXIT_SUCCESS;
 }
