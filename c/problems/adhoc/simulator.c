@@ -45,8 +45,10 @@ static long* getvar(char* const nameptr, char** const endptr)
 int main(void)
 {
 	long i, num1, num2;
-	long* var;
-	char* endptr;
+
+	long* var = NULL;
+	char* endptr = NULL;
+
 	size_t size = 32;
 	char* buffer = malloc(sizeof(char) * size);
 
