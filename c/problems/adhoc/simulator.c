@@ -21,6 +21,7 @@ static bool isletter(char c)
 	return c >= 'a' && c <= 'z';
 }
 
+
 static long* getvar(char* const nameptr, char** const endptr)
 {
 	char name[9];
