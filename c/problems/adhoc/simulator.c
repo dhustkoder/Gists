@@ -27,11 +27,11 @@ static long* getvar(char* const nameptr, char** const endptr)
 	char name[9];
 	int i;
 
-	for (i = 0; i < 8 && nameptr[i] != ' ' && nameptr[i] != '\n' && nameptr[i] != '\0'; ++i)
+	for (i = 0; isletter(nameptr[i]); ++i)
 		name[i] = nameptr[i];
 
 	name[i] = '\0';
-	*endptr = (nameptr + strlen(name));
+	*endptr = nameptr + i;
 
 	for (i = 0; i < vars_idx; ++i)
 		if (strcmp(name, vars_names[i]) == 0)
@@ -79,7 +79,8 @@ int main(void)
 	}
 
 	printf("%ld\n", var != NULL ? *var : 0);
-
+	free(buffer);
+	
 	return EXIT_SUCCESS;
 }
 
