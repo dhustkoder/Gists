@@ -16,7 +16,7 @@ int main(void)
 {
 	long double a = 0, b = 1, c, aux;
 
-	printf("0: %llu\n1: %llu\n", a, b);
+	printf("0: 0\n1: 1\n");
 
 	for (int i = 2; i < 100; ++i) {
 		c = a + b;
