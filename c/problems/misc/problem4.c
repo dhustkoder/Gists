@@ -21,10 +21,10 @@ static void arrange(unsigned int* const nums, const unsigned char size)
 	int fd[size]; // first digits
 	for (int i = 0; i < size; ++i) {
 		int number = nums[i];
-		while (number != 0) {
+		do {
 			fd[i] = number % 10;
 			number /= 10;
-		}
+		} while (number != 0);
 	}
 
 
@@ -59,7 +59,7 @@ static void print_nums(const unsigned int* const nums, const unsigned char size)
 
 int main(void)
 {
-	unsigned int nums[] = {5, 2, 1, 9, 50, 56};
+	unsigned int nums[] = {5, 2, 1, 0, 9, 0, 50, 56 };
 	const unsigned char size = sizeof(nums) / sizeof(nums[0]);
 
 	printf("BEFORE: ");
