@@ -52,7 +52,7 @@ static void print_nums(const unsigned int* const nums, const unsigned char size)
 			printf(", %d", nums[i]);
 		printf("]\n");
 	} else {
-		printf("[]");
+		printf("[]\n");
 	}
 }
 
