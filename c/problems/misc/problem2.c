@@ -11,41 +11,55 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 
-static int* combine(const int* a, const int* b, const int size)
+static void combine(const int* a, const int* b, const int size, int* dest)
 {
-	int* c = malloc(sizeof(int) * size * 2);
-
 	for (int i = 0; i < size; ++i) {
 
-		*c = *a;
+		*dest = *a;
 		++a;
-		++c;
+		++dest;
 
-		*c = *b;
+		*dest = *b;
 		++b;
-		++c;
+		++dest;
 	}
+}
 
-	return c - (size * 2);
+
+static void print_nums(const int* const nums, const int size)
+{
+	if (size > 0) {
+		printf("[%d", nums[0]);
+		for (int i = 1; i < size; ++i)
+			printf(", %d", nums[i]);
+		printf("]\n");
+	} else {
+		printf("[]");
+	}
 }
 
 
 int main(void)
 {
-	const int a[3] = { 1, 2, 3 };
-	const int b[3] = { 4, 5, 6 };
+	const int a[] = { 1, 2, 3 };
+	const int b[] = { 4, 5, 6 };
 	_Static_assert(sizeof(a) == sizeof(b), "");
+
 	const int size = sizeof(a) / sizeof(a[0]);
+	const int dest_size = size * 2;
+	int dest[dest_size];
 
-	int* const result = combine(a, b, size);
+	printf("A: ");
+	print_nums(a, size);
+	printf("B: ");
+	print_nums(b, size);
 
-	for (int i = 0; i < size * 2; ++i)
-		printf("%d\n", result[i]); 
+	combine(a, b, size, dest);
 
-	free(result);
+	printf("RESULT: ");
+	print_nums(dest, dest_size);
 
 	return EXIT_SUCCESS;
 }

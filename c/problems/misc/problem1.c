@@ -42,7 +42,7 @@ static int sum_recursive(const int* const numbers, const int size)
 
 int main(void)
 {
-	const int numbers[5] = { 10, 10, 10, 10, 10 };
+	const int numbers[] = { 10, 10, 10, 10, 10 };
 	const int size = sizeof(numbers) / sizeof(numbers[0]);
 
 	printf("FOR-LOOP: %d\n"
