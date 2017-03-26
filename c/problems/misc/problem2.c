@@ -36,7 +36,7 @@ static void print_nums(const int* const nums, const int size)
 			printf(", %d", nums[i]);
 		printf("]\n");
 	} else {
-		printf("[]");
+		printf("[]\n");
 	}
 }
 
