@@ -8,10 +8,23 @@
  * Language: C11
  * */
 
+#include <stdio.h>
+#include <stdlib.h>
+
 
 int main(void)
 {
+	const int kTargetSum = 100;
 	const int kNums[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+	const int kNumsSize = sizeof(kNums) / sizeof(kNums[0]);
+
+	int r = 0;
+	for (int i = 0; i < kNumsSize; ++i) {
+		r += kNums[i];
+	}
+
+	printf("%d\n", r);
+
 	return EXIT_SUCCESS;
 }
 

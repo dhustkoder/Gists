@@ -18,21 +18,22 @@
 
 static void arrange(unsigned int* const nums, const unsigned char size)
 {
-	int leftmost_digits[size];
+	int fd[size]; // first digits
 	for (int i = 0; i < size; ++i) {
 		int number = nums[i];
 		while (number != 0) {
-			leftmost_digits[i] = number % 10;
+			fd[i] = number % 10;
 			number /= 10;
 		}
 	}
 
+
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size - 1; ++j) {
-			if (leftmost_digits[j + 1] > leftmost_digits[j]) {
-				int aux = leftmost_digits[j];
-				leftmost_digits[j] = leftmost_digits[j + 1];
-				leftmost_digits[j + 1] = aux;
+			if (fd[j + 1] > fd[j] || (fd[j + 1] == fd[j] && nums[j + 1] > nums[j])) {
+				int aux = fd[j];
+				fd[j] = fd[j + 1];
+				fd[j + 1] = aux;
 
 				aux = nums[j];
 				nums[j] = nums[j + 1];
@@ -58,8 +59,9 @@ static void print_nums(const unsigned int* const nums, const unsigned char size)
 
 int main(void)
 {
-	unsigned int nums[] = {50, 2, 1, 9};
+	unsigned int nums[] = {5, 2, 1, 9, 50, 56};
 	const unsigned char size = sizeof(nums) / sizeof(nums[0]);
+
 	printf("BEFORE: ");
 	print_nums(nums, size);
 	arrange(nums, size);
