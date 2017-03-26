@@ -32,6 +32,7 @@ static int* combine(const int* a, const int* b, const int size)
 	return c - (size * 2);
 }
 
+
 int main(void)
 {
 	const int a[3] = { 1, 2, 3 };
