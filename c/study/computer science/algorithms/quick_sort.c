@@ -11,7 +11,7 @@ static int quick_sort_part(int* arr, int beg, int end);
 int main(const int argc, const char* const * const argv)
 {
 	if (argc < 3) {
-		printf("Usage: %s [list]\n", argv[0]);
+		fprintf(stderr, "Usage: %s [list]\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 

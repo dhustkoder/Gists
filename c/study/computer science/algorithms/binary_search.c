@@ -31,7 +31,7 @@ static int compare(const void* const lhs, const void* const rhs)
 int main(const int argc, const char* const * const argv)
 {
 	if (argc < 3) {
-		printf("Usage: %s [list] [target]\n", argv[0]);
+		fprintf(stderr, "Usage: %s [list] [target]\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
