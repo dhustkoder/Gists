@@ -4,6 +4,9 @@
 
 
 static int* quick_sort(int* arr, int size);
+static void quick_sort_rec(int* arr, int beg, int end);
+static int quick_sort_part(int* arr, int beg, int end);
+
 
 int main(const int argc, const char* const * const argv)
 {
@@ -21,10 +24,6 @@ int main(const int argc, const char* const * const argv)
 	free(array);
 	return EXIT_SUCCESS;
 }
-
-
-static void quick_sort_rec(int* arr, int beg, int end);
-static int quick_sort_part(int* arr, int beg, int end);
 
 
 int* quick_sort(int* const arr, const int size)
@@ -64,6 +63,9 @@ int quick_sort_part(int* const arr, const int beg, const int end)
 		const int aux = arr[r];
 		arr[r] = arr[l];
 		arr[l] = aux;
+
+		++l;
+		--r;
 	}
 
 	const int aux = arr[r];
@@ -71,6 +73,4 @@ int quick_sort_part(int* const arr, const int beg, const int end)
 	arr[beg] = aux;
 	return r;
 }
-
-
 
