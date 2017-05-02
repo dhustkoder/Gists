@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$CC" != "" ]; then
+	$CC -Wall -Wextra -std=c89 -pedantic-errors -O3 -lm -o "${1%".c"}.out" $1
+else
+	echo "Set your C compiler by CC environment variable. Example: export CC=gcc"
+fi
+

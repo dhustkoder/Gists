@@ -1,10 +1,8 @@
-/**
- * Given an array of integers, return indices of the two numbers such that they add up to a specific target.
- * You may assume that each input would have exactly one solution, and you may not use the same element twice.
- *
- * Note: The returned array must be malloced, assume caller calls free().
- */
-int* twoSum(int* const nums, const int size, const int target)
+#include <stdio.h>
+#include <stdlib.h>
+
+
+static int* twoSum(const int* const nums, const int size, const int target)
 {
 	int i, j;
 	int* const r = malloc(sizeof(int) * 2);
@@ -21,5 +19,14 @@ int* twoSum(int* const nums, const int size, const int target)
 
 	free(r);
 	return NULL;
+}
+
+
+int main(void)
+{
+	const int nums[] = {5, 2, 3, 4};
+	int* const r = twoSum(nums, sizeof(nums) / sizeof(nums[0]), nums[0] + nums[3]);
+	printf("[%d] = %d\n[%d] = %d\n", r[0], nums[r[0]], r[1], nums[r[1]]);
+	return 0;
 }
 
