@@ -12,9 +12,10 @@ static int strStr(const char* const haystack, const char* const needle)
 	for (i = 0; haystack[i] != '\0'; ++i) {
 		if (haystack[i] == needle[0]) {
 			j = i + 1;
-			while (haystack[j] == needle[j - i] &&
-			       haystack[j] != '\0' && needle[j - i] != '\0')
+
+			while (haystack[j] == needle[j - i] && haystack[j] != '\0' && needle[j - i] != '\0')
 				++j;
+
 			if (needle[j - i] == '\0')
 				return i;
 		}
