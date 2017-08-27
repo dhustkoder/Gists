@@ -35,6 +35,6 @@ int main(void)
 	}
 
 	buffer[len - 1] = '\0';
-	printf("%s", buffer);
+	printf("%s\n", buffer);
 	return 0;
 }

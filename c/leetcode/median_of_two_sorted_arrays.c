@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <alloca.h>
 
 
 static double findMedianSortedArrays(const int* const array1, const int m, const int* const array2, const int n)
@@ -8,7 +9,7 @@ static double findMedianSortedArrays(const int* const array1, const int m, const
 	int i, a, b;
 	const int rsz = m + n;
 	const int midx = rsz / 2;
-	int* const r = malloc(sizeof(int) * rsz);
+	int* const r = alloca(sizeof(int) * rsz);
 
 	for (i = a = b = 0; i < rsz; ++i) {
 		if (a < m && b < n) {
@@ -29,7 +30,6 @@ static double findMedianSortedArrays(const int* const array1, const int m, const
 	else
 		mid = (r[midx] + r[midx - 1]) / 2.0;
 
-	free(r);
 	return mid;
 }
 
