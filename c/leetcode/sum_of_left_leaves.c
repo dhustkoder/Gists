@@ -1,9 +1,10 @@
 #include <stdio.h>
 
+
 typedef struct TreeNode {
 	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
+	const struct TreeNode* left;
+	const struct TreeNode* right;
 } TreeNode;
 
 
@@ -20,19 +21,17 @@ static int sum_of_left_leaves(const struct TreeNode* const root)
 }
 
 
-
 int main(void)
 {
-	TreeNode a = { 9, NULL, NULL };
-	TreeNode b = { 15, NULL, NULL };
-	TreeNode c = { 7, NULL, NULL };
-	TreeNode d = { 20, &b, &c };
-	TreeNode e = { 3, &a, &d };
+	const TreeNode a = { 9, NULL, NULL };
+	const TreeNode b = { 15, NULL, NULL };
+	const TreeNode c = { 7, NULL, NULL };
+	const TreeNode d = { 20, &b, &c };
+	const TreeNode e = { 3, &a, &d };
 
 
 	printf("%d\n", sum_of_left_leaves(&e));
 
 	return 0;
 }
-
 
