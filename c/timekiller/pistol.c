@@ -27,15 +27,19 @@ static char buf[1024];
 
 int main(void)
 {
+	char c;
+	int i;
+	clock_t clk;
+
 	for (;;) {
 		CLS();
 		printf("%s", gun);
 
-		const char c = getchar();
+		c = getchar();
 		if (c == 'q')
 			break;
 		
-		for (int i = 0; i < 64; ++i) {
+		for (i = 0; i < 64; ++i) {
 			CLS();
 			memset(buf, 0, sizeof(buf));
 			memcpy(buf, gun, 71);
@@ -49,8 +53,8 @@ int main(void)
 
 			printf("%s", buf);
 			
-			const clock_t c = clock();
-			while ((clock() - c) < (CLOCKS_PER_SEC / 32))
+			clk = clock();
+			while ((clock() - clk) < (CLOCKS_PER_SEC / 32))
 				;
 		}
 	}
