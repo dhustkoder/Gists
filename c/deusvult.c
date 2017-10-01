@@ -4,23 +4,16 @@
 #include <ctype.h>
 
 
-#ifdef _WIN32
-#define CLS() (system("cls"))
-#else
-#define CLS() (system("clear"))
-#endif
-
-
 int main(void)
 {
 	char dv[] = "deus vult";
 	int i = 0;
 	int j = 8;
 	for (;;) {
-		CLS();
 		dv[i] = toupper(dv[i]);
 		dv[j] = toupper(dv[j]);
-		puts(dv);
+		printf("%s\r", dv);
+		fflush(stdout);
 		dv[i] = tolower(dv[i]);
 		dv[j] = tolower(dv[j]);
 
