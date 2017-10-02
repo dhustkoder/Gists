@@ -31,10 +31,8 @@ int main(void)
 			j = 8;
 		
 		clock_t clk = clock();
-
 		while ((clock() - clk) < (CLOCKS_PER_SEC / 12))
 			;
-
 	}
 
 	return 0;
