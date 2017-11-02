@@ -4,15 +4,9 @@ using System.Collections.Generic;
 class CanConstruct {
 	static bool Execute(string ransomNote, string magazine)
 	{
-		var a = new List<char>();
-		var b = new List<char>();
+		var a = new List<char>(ransomNote);
 
-		foreach (char x in ransomNote)
-			a.Add(x);
 		foreach (char x in magazine)
-			b.Add(x);
-
-		foreach (char x in b)
 			a.Remove(x);
 
 		return a.Count == 0;
