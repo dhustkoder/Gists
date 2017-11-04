@@ -6,7 +6,7 @@ typedef struct {
 } MinStack;
 
 /** initialize your data structure here. */
-MinStack* minStackCreate(const int maxSize)
+static MinStack* minStackCreate(const int maxSize)
 {
 	MinStack* const s = malloc(sizeof(MinStack) + sizeof(int) * maxSize);
 	s->idx = 0;
@@ -14,42 +14,42 @@ MinStack* minStackCreate(const int maxSize)
 	return s;
 }
 
-void minStackPush(MinStack* const obj, const int x)
+static void minStackPush(MinStack* const s, const int x)
 {
-	if (obj->idx != 0 && x < obj->buffer[obj->min_idx])
-		obj->min_idx = obj->idx;
-	obj->buffer[obj->idx++] = x;
+	if (s->idx != 0 && x < s->buffer[s->min_idx])
+		s->min_idx = s->idx;
+	s->buffer[s->idx++] = x;
 }
 
-void minStackPop(MinStack* const obj)
+static void minStackPop(MinStack* const s)
 {
-	--obj->idx;
-	if (obj->idx == obj->min_idx) {
-		int min = obj->buffer[0];
+	--s->idx;
+	if (s->idx == s->min_idx) {
+		int min = s->buffer[0];
 		int idx = 0;
-		for (int i = 1; i < obj->idx; ++i) {
-			if (obj->buffer[i] < min) {
-				min = obj->buffer[i];
+		for (int i = 1; i < s->idx; ++i) {
+			if (s->buffer[i] < min) {
+				min = s->buffer[i];
 				idx = i;
 			}
 		}
-		obj->min_idx = idx;
+		s->min_idx = idx;
 	}
 }
 
-int minStackTop(MinStack* const obj)
+static int minStackTop(const MinStack* const s)
 {
-	return obj->buffer[obj->idx - 1];
+	return s->buffer[s->idx - 1];
 }
 
-int minStackGetMin(MinStack* const obj)
+static int minStackGetMin(const MinStack* const s)
 {
-	return obj->buffer[obj->min_idx];
+	return s->buffer[s->min_idx];
 }
 
-void minStackFree(MinStack* const obj)
+static void minStackFree(MinStack* const s)
 {
-	free(obj);    
+	free(s);    
 }
 
 
