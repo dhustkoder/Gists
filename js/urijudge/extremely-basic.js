@@ -1,42 +1,6 @@
+var input = require('fs').readFileSync('/dev/stdin', 'utf8');
+var lines = input.split('\n');
 
 
-class Test  {
-	constructor() 
-	{
-		console.log('test contructor');
-		this.testingVar = 'Hello Modafoka';
-		this.testMethod = this._testMethod.bind(this);
-	}
-
-	_testMethod()
-	{
-		this.testingVar = 'Testing Var Changed';
-	}
-	
-	printTestingVar()
-	{
-		console.log(this.testingVar);
-	}
-
-}
-
-
-class FunCaller {
-	constructor(fun)
-	{
-		this.fun = fun;
-	}
-
-	callFun()
-	{
-		this.fun();
-	}
-}
-
-
-test = new Test();
-funCaller = new FunCaller(test.testMethod);
-funCaller.callFun();
-test.printTestingVar();
-
+console.log('X = ' + (parseInt(lines[0]) + parseInt(lines[1])));
 
